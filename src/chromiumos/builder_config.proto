@@ -1,0 +1,47 @@
+// Copyright 2019 The Chromium OS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+syntax = "proto3";
+
+package chromiumos;
+
+option go_package = "go.chromium.org/chromiumos/infra/proto/go/chromiumos";
+
+import "google/protobuf/wrappers.proto";
+
+// Configuration used by a builder during execution.
+message BuilderConfig {
+
+  // Unique identifier of the builder configuration.
+  message Id {
+    // The name of the configuration such as "arm-generic-postsubmit".
+    string name = 1;
+    // Branch the configuration applies to such as "release-R73-11647.B".
+    string branch = 2;
+    // Type of build.
+    enum Type {
+      TYPE_UNSPECIFIED = 0;
+      // Commit queue build.
+      CQ = 1;
+      // Postsubmit build.
+      POSTSUBMIT = 2;
+    }
+    Type type = 3;
+  }
+  Id id = 1;
+
+  // General configuration for the builder.
+  message General {
+    // Whether or not the build is considered critical. A failure in a critical
+    // build for a CQ builder may, for example, prevent submission of the CL.
+    google.protobuf.BoolValue critical = 1;
+  }
+  General general = 2;
+}
+
+// List of builder configs. Intended to be serialized to / from disk.
+message BuilderConfigs {
+  repeated BuilderConfig builder_configs = 1;
+}
+
