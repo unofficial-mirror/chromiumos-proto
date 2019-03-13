@@ -1,4 +1,10 @@
 #!/bin/bash -e
+#
+# Copyright 2019 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# Runs protoc over the protos in this repo to produce generated proto code.
 
 # Version of Protobuf compiler to get from CIPD.
 CIPD_PROTOC_VERSION='v3.6.1'
