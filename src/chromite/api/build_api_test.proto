@@ -1,4 +1,4 @@
-syntax = 'proto3';
+syntax = "proto3";
 
 package chromite.api;
 
@@ -30,7 +30,7 @@ service TestApiService {
   // Method name override.
   rpc RenamedMethod(TestRequestMessage) returns (TestResultMessage) {
     option (method_options) = {
-      implementation_name: 'CorrectName'
+      implementation_name: "CorrectName",
     };
   }
 }
