@@ -6,8 +6,9 @@
 #
 # Runs protoc over the protos in this repo to produce generated proto code.
 
-# Version of Protobuf compiler to get from CIPD.
+# Versions of packages to get from CIPD.
 CIPD_PROTOC_VERSION='v3.6.1'
+CIPD_PROTOC_GEN_GO_VERSION='v1.3.1'
 
 # Move to this script's directory.
 cd "$(dirname "$0")"
@@ -18,9 +19,12 @@ cipd ensure \
   -log-level warning \
   -root "${cipd_root}" \
   -ensure-file - \
-  <<< "infra/tools/protoc/\${platform} protobuf_version:${CIPD_PROTOC_VERSION}"
+  <<ENSURE_FILE
+infra/tools/protoc/\${platform} protobuf_version:${CIPD_PROTOC_VERSION}
+chromiumos/infra/tools/protoc-gen-go version:${CIPD_PROTOC_GEN_GO_VERSION}
+ENSURE_FILE
 
-protoc="${cipd_root}/protoc"
+PATH="${cipd_root}:${PATH}"
 
 # Clean up existing generated files.
 find go -name '*.pb.go' -exec rm '{}' \;
@@ -28,4 +32,4 @@ find go -name '*.pb.go' -exec rm '{}' \;
 # Go files need to be processed individually until this is fixed:
 # https://github.com/golang/protobuf/issues/39
 find src -name '*.proto' -exec \
-  "${protoc}" -Isrc --go_out=paths=source_relative:go '{}' \;
+  protoc -Isrc --go_out=paths=source_relative:go '{}' \;
