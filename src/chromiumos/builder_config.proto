@@ -38,6 +38,16 @@ message BuilderConfig {
     google.protobuf.BoolValue critical = 1;
   }
   General general = 2;
+
+  // Configuration pertaining to builders operating as "orchestrators".
+  // Orchestrators orchestrate the running of other child builders.
+  message Orchestrator {
+    // BuilderConfig.Id.name of the child builds. They would expect to match
+    // this name and the BuilderConfig.Id.branch and BuilderConfig.Id.type of
+    // this parent orchestrator builder.
+    repeated string children = 1;
+  }
+  Orchestrator orchestrator = 3;
 }
 
 // List of builder configs. Intended to be serialized to / from disk.
