@@ -44,6 +44,8 @@ message CreateImageResult {
   bool success = 1;
   // Images that were built. Will contain no more than one per image type.
   repeated Image images = 2;
+  // Any packages that failed to build. Empty on success.
+  repeated chromiumos.PackageInfo failed_packages = 3;
 }
 
 // The image test arguments.
@@ -70,6 +72,7 @@ message TestImageResult {
 service ImageService {
   option (service_options) = {
     module: "image",
+    service_chroot_assert: INSIDE,
   };
 
   // Build an image.
@@ -77,11 +80,7 @@ service ImageService {
   // {
   //  "build_target": {"name": "reef"},
   // }
-  rpc Create(CreateImageRequest) returns (CreateImageResult) {
-    option (method_options) = {
-      method_chroot_assert: INSIDE,
-    };
-  }
+  rpc Create(CreateImageRequest) returns (CreateImageResult);
 
   // Test an image.
   // Example json:
@@ -90,9 +89,5 @@ service ImageService {
   //  "image": {"path": "/mnt/host/source/src/build/images/reef/latest"},
   //  "result": {"directory": "/tmp/image_test_results"}
   // }
-  rpc Test(TestImageRequest) returns (TestImageResult) {
-    option (method_options) = {
-      method_chroot_assert: INSIDE,
-    };
-  }
+  rpc Test(TestImageRequest) returns (TestImageResult);
 }
