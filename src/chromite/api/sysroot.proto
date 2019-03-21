@@ -1,0 +1,79 @@
+syntax = "proto3";
+package chromite.api;
+
+import "chromite/api/build_api.proto";
+import "chromiumos/common.proto";
+
+// Sysroot information.
+message Sysroot {
+  // Sysroot location.
+  string path = 1;
+  // The build target used to create the sysroot.
+  chromiumos.BuildTarget build_target = 2;
+}
+
+// Information about the sysroot's profile.
+message Profile {
+  // The name of the profile.
+  string name = 1;
+}
+
+// Sysroot create request.
+message SysrootCreateRequest {
+  // The Create flags.
+  message Flags {
+    // Triggers an update of the chroot unless the it is declared as current.
+    bool chroot_current = 1;
+    // Replace the existing sysroot when one already exists when set to true,
+    // otherwise keep the existing sysroot. No effect when
+    bool replace = 2;
+  }
+
+  // The target whose sysroot is being created.
+  chromiumos.BuildTarget build_target = 1;
+  // The sysroot create flags.
+  Flags flags = 2;
+  // The profile to select for the sysroot.
+  Profile profile = 3;
+}
+
+// Create response.
+message SysrootCreateResponse {
+  // Information about the created sysroot. This sysroot can be passed directly
+  // to the InstallToolchainRequest.
+  Sysroot sysroot = 1;
+}
+
+// Request to install the toolchain into the sysroot.
+message InstallToolchainRequest {
+  // The install toolchain flags.
+  message Flags {
+    // Compile from source (true), or use bin packages (false).
+    bool compile_source = 1;
+  }
+
+  // The sysroot where the toolchain is being installed.
+  // The path and build_target are required.
+  Sysroot sysroot = 1;
+  // The flags for the install.
+  Flags flags = 2;
+}
+
+message InstallToolchainResponse {
+  // The packages that failed to install. Will populate at least the category
+  // and package fields for any failed packages.
+  repeated chromiumos.PackageInfo failed_packages = 1;
+}
+
+
+service SysrootService {
+  option (service_options) = {
+    module: "sysroot",
+    service_chroot_assert: INSIDE,
+  };
+
+  rpc Create(SysrootCreateResponse) returns (SysrootCreateResponse);
+
+  rpc InstallToolchain(InstallToolchainRequest)
+    returns (InstallToolchainResponse);
+}
