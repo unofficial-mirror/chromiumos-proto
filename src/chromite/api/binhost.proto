@@ -1,0 +1,78 @@
+syntax = 'proto3';
+package chromite.api;
+
+import "chromite/api/build_api.proto";
+import "chromiumos/common.proto";
+
+// Portage environment variable that points to a remote binhost.
+enum BinhostKey {
+  POSTSUBMIT_BINHOST = 0;
+  LATEST_RELEASE_CHROME_BINHOST = 1;
+  PREFLIGHT_BINHOST = 2;
+}
+
+// Describes where prebuilts will be uploaded so package index and other
+// Portage metadata can be updated appropriately.
+message PrepareBinhostUploadsRequest {
+  // Build target to prepare prebuilts for.
+  chromiumos.BuildTarget build_target = 1;
+
+  // Full URI where we wish to store prebuilts. Note that this service
+  // call does NOT upload them, it only updates metadata.
+  // Example: gs://chromeos-prebuilt/board/amd64-generic/packages/
+  string uri = 2;
+}
+
+// Return all files to upload.
+message PrepareBinhostUploadsResponse {
+  // Absolute chroot path to the local directory containing files to upload.
+  string uploads_dir = 1;
+
+  // An upload target is a file in the uploads_dir.
+  message UploadTarget {
+    // Paths relative to uploads_dir.
+    string path = 1;
+  }
+
+  // All targets to be uploaded to the binhost.
+  repeated UploadTarget upload_targets = 2;
+}
+
+// Set a binhost URL for the given build target.
+message SetBinhostRequest {
+  // Build target to update binhost for.
+  chromiumos.BuildTarget build_target = 1;
+
+  // Whether or not the binhost is private.
+  bool private = 2;
+
+  // Binhost key to set or update.
+  BinhostKey key = 3;
+
+  // URI storing all the binaries.
+  string uri = 4;
+}
+
+// Response for SetBinhost service call.
+message SetBinhostResponse {
+  // Absolute path to the updated binhost conf file.
+  string output_file = 1;
+}
+
+// Service for reading and writing to Portage package index.
+service BinhostService {
+  option (service_options) = {
+    module: "binhost",
+    service_chroot_assert: INSIDE,
+  };
+
+  // Return a list of files to upload to the binhost. Importantly, this method
+  // assumes that all files, once uploaded, will share the same relative path
+  // on the remote disk as they do on the remote disk. E.g., package foo/bar,
+  // stored locally at /mnt/bin/foo/bar, must be uploaded to <uri>/foo/bar.
+  rpc PrepareBinhostUploads(PrepareBinhostUploadsRequest)
+    returns (PrepareBinhostUploadsResponse);
+
+  // Update the binhost key for a build targets.
+  rpc SetBinhost(SetBinhostRequest) returns (SetBinhostResponse);
+}
