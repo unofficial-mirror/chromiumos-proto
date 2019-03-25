@@ -111,14 +111,9 @@ message VmTestCfg {
 }
 
 
-// Specifies a CrOS target, either by reference design or by a specific build
-// target.
+// Specifies a CrOS builder to target.
 message TargetCriteria {
   oneof target_type {
-    // A CrOS reference design that may represent many different build targets.
-    // This corresponds to values of `mosys platform family`, such as
-    // "Google_Coral".
-    string reference_design = 1;
     // Any CrOS build target, such as "kevin". This should correspond to a
     // Portage overlay.
     string build_target = 2;
@@ -127,8 +122,7 @@ message TargetCriteria {
 
 // Details which testing is needed for a single CrOS build target.
 message PerTargetTestRequirements {
-  // Specifies the reference design or build target to which these testing
-  // requirements should be applied.
+  // Specifies the crieria for builds to target for testing.
   TargetCriteria target_criteria = 1;
 
   // These configure what testing is needed for these BuildCriteria.
@@ -141,8 +135,7 @@ message PerTargetTestRequirements {
 
 // A listing of all testing that should be done for all CrOS builds.
 message TargetTestRequirementsCfg {
-  // The testing that should be performed for a single CrOS build target or
-  // reference design.
+  // The testing that should be performed for a single set of target criteria.
   repeated PerTargetTestRequirements per_target_test_requirements = 1;
 }
 

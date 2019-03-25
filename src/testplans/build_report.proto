@@ -15,11 +15,6 @@ message BuildReport {
   // moved out of chromite.
   string build_target = 1;
 
-  // A Chrome OS reference design, such as "Google_Reef", or none, if there's no
-  // MAINBOARD_FAMILY for this build target. Values come from
-  // `mosys platform family`.
-  string reference_design = 2;
-
   enum BuildResultStatus {
     BUILD_RESULT_STATUS_UNSPECIFIED = 0;
     SUCCESS = 1;
