@@ -48,10 +48,22 @@ message BuilderConfig {
     repeated string children = 1;
   }
   Orchestrator orchestrator = 3;
+
+  // Configuration pertaining to artifacts produced during a build.
+  message Artifacts {
+    // How to handle the uploading of prebuilts.
+    enum Prebuilts {
+      PREBUILTS_UNSPECIFIED = 0;
+      PUBLIC = 1;
+      PRIVATE = 2;
+      NONE = 3;
+    }
+    Prebuilts prebuilts = 1;
+  }
+  Artifacts artifacts = 4;
 }
 
 // List of builder configs. Intended to be serialized to / from disk.
 message BuilderConfigs {
   repeated BuilderConfig builder_configs = 1;
 }
-
