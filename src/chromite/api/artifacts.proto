@@ -1,0 +1,52 @@
+syntax = 'proto3';
+package chromite.api;
+
+import "chromite/api/build_api.proto";
+import "chromiumos/common.proto";
+
+// An artifact is a file generated during or after a build.
+message Artifact {
+  // Absolute path to the artifact file.
+  string path = 1;
+}
+
+// Request describing where build artifact bundles for a given build target
+// should be dumped.
+message BundleRequest {
+  // The build target to bundle artifacts for.
+  chromiumos.BuildTarget build_target = 1;
+
+  // Absolute path to the directory in which artifacts should be dropped.
+  string output_dir = 2;
+}
+
+// Response describing which bundles were dumped to the given output directory.
+message BundleResponse {
+  // The artifacts that added to the output directory.
+  repeated Artifact artifacts = 1;
+}
+
+// Service for bundling build artifacts and dumping them somewhere on disk.
+service ArtifactsService {
+  option (service_options) = {
+    module: "artifacts",
+  };
+
+  // Generate minimal update payloads to be used in HW testing.
+  rpc BundleTestUpdatePayloads(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with all files needed for Autotest HW testing.
+  rpc BundleAutotestFiles(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with all files needed for Tast HW testing.
+  rpc BundleTastFiles(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with all guest images test bundles.
+  rpc BundlePinnedGuestImages(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with unsigned firmware images.
+  rpc BundleFirmware(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with ebuild logs.
+  rpc BundleEbuildLogs(BundleRequest) returns (BundleResponse);
+}
