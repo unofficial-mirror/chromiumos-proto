@@ -68,11 +68,11 @@ func (m *BuildTarget) GetName() string {
 // Message describing a package, The corresponding variable names are from
 // https://devmanual.gentoo.org/ebuild-writing/variables/index.html
 type PackageInfo struct {
-	// The package name (PN variable)
+	// The package name (PN variable).
 	PackageName string `protobuf:"bytes,1,opt,name=package_name,json=packageName,proto3" json:"package_name,omitempty"`
-	// The package category (CATEGORY variable)
+	// The package category (CATEGORY variable).
 	Category string `protobuf:"bytes,2,opt,name=category,proto3" json:"category,omitempty"`
-	// The package version and revision (PVR variable)
+	// The package version and revision (PVR variable).
 	Version              string   `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`

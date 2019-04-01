@@ -1,0 +1,25 @@
+syntax = "proto3";
+package chromite.api;
+
+import "chromite/api/build_api.proto";
+import "chromite/api/sysroot.proto";
+import "google/protobuf/empty.proto";
+
+// Proto for executing test-related functionality.
+
+// Run the debug_info_test script.
+message DebugInfoTestRequest {
+  // The sysroot to tests.
+  chromite.api.Sysroot sysroot = 1;
+}
+
+// The test service.
+service TestService {
+  option (service_options) = {
+    module: "test",
+    service_chroot_assert: INSIDE,
+  };
+
+  // Run the debug info tests on a sysroot.
+  rpc DebugInfoTest(DebugInfoTestRequest) returns (google.protobuf.Empty);
+}
