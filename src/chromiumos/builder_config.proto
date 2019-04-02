@@ -61,6 +61,14 @@ message BuilderConfig {
     Prebuilts prebuilts = 1;
   }
   Artifacts artifacts = 4;
+
+  // Configuration pertaining to Chrome.
+  message Chrome {
+    // Whether to build internal or external Chrome. Internal chrome adds
+    // Chrome branding.
+    bool internal = 1;
+  }
+  Chrome chrome = 5;
 }
 
 // List of builder configs. Intended to be serialized to / from disk.
