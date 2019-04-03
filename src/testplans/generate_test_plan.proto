@@ -21,8 +21,9 @@ message GenerateTestPlanRequest {
   // Path on disk to target_test_requirements.cfg, which lives in chromite.
   string target_test_requirements_path = 2;
 
-  // Path on disk to a BuildReport in protobuf JSON format.
-  repeated FilePath build_report_path = 3;
+  // Path on disk to the buildbucket Build protos in protobuf JSON format.
+  // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
+  repeated FilePath buildbucket_build_path = 3;
 }
 
 // The final test plan.
