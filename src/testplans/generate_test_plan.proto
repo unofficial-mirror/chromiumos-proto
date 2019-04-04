@@ -24,6 +24,9 @@ message GenerateTestPlanRequest {
   // Path on disk to the buildbucket Build protos in protobuf JSON format.
   // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
   repeated FilePath buildbucket_build_path = 3;
+
+  // Path on disk to the chromiumos repo checkout.
+  string chromiumos_checkout_root = 4;
 }
 
 // The final test plan.
