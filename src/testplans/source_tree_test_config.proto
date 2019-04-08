@@ -8,6 +8,8 @@ package testplans;
 
 option go_package = "go.chromium.org/chromiumos/infra/proto/go/testplans";
 
+import "testplans/common.proto";
+
 // Testing restrictions to apply to a source tree.
 message TestRestriction {
   // Whether to disable hardware tests.
@@ -16,14 +18,6 @@ message TestRestriction {
   bool disable_image_tests = 2;
   // Whether to disable virtual machine tests.
   bool disable_vm_tests = 3;
-}
-
-// A unit of the CrOS codebase. As of 2019-01, this concept maps 1-to-1 with
-// "paths" in the the internal and external full.xml files.
-message SourceTree {
-  // The path of a source tree,
-  // e.g. "src/platform2" or "src/third_party/kernel/v4.19".
-  string path = 1;
 }
 
 // A set of test restrictions for a source tree.

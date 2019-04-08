@@ -1,0 +1,18 @@
+// Copyright 2019 The Chromium OS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+syntax = "proto3";
+
+package testplans;
+
+option go_package = "go.chromium.org/chromiumos/infra/proto/go/testplans";
+
+// A unit of the CrOS codebase. As of 2019-01, this concept maps 1-to-1 with
+// "paths" in the the internal and external full.xml files.
+message SourceTree {
+  // The path of a source tree,
+  // e.g. "src/platform2" or "src/third_party/kernel/v4.19".
+  string path = 1;
+}
+
