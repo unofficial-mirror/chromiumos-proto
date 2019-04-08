@@ -32,6 +32,9 @@ service ArtifactsService {
     module: "artifacts",
   };
 
+  // Generate zip containing all built images for the target.
+  rpc BundleImageZip(BundleRequest) returns (BundleResponse);
+
   // Generate minimal update payloads to be used in HW testing.
   rpc BundleTestUpdatePayloads(BundleRequest) returns (BundleResponse);
 
