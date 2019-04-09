@@ -1,0 +1,21 @@
+// Copyright 2019 The Chromium OS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+syntax = "proto3";
+
+package device;
+
+option go_package = "go.chromium.org/chromiumos/infra/proto/go/device";
+
+// For more details, see:
+// https://www.google.com/chromeos/partner/fe/docs/latest-requirements/formfactors.html
+enum FormFactor {
+  FORM_FACTOR_UNSPECIFIED = 0;
+  CLAMSHELL = 1;
+  CONVERTIBLE = 2;
+  DETACHABLE = 3;
+  CHROMEBASE = 4;
+  CHROMEBOX = 5;
+  CHROMEBIT = 6;
+}
