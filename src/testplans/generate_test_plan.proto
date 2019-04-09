@@ -34,22 +34,15 @@ message GenerateTestPlanResponse {
   repeated TestUnit test_unit = 1;
 }
 
-// A Chromium build image, such as "kevin".
-message Image {
-  // The build image's name.
-  string image_name = 1;
-}
-
 // The files that should be tested in a test plan.
 message BuildPayload {
-  // We expect to use either version or images, but not both.
-  // We'll drop the unnecessary one once we've sorted out details
-  // with the Skylab team.
-  string version = 1;
-  repeated Image image = 2;
-  // The location in Google Storage of the artifacts for this build.
-  // e.g. gs://chromeos-image-archive/eve-paladin/R73-11588.0.0-rc4
-  string artifact_path = 3;
+  // The GS bucket in which artifacts for the build are stored, e.g.
+  // gs://chromeos-image-archive
+  string artifacts_gs_bucket = 1;
+
+  // The path in the bucket in which artifacts for the build are stored, e.g.
+  // eve-paladin/R73-11588.0.0-rc4
+  string artifacts_gs_path = 2;
 }
 
 // Hardware or VM requirements for running a test plan.
