@@ -59,6 +59,28 @@ message BuilderConfig {
       NONE = 3;
     }
     Prebuilts prebuilts = 1;
+
+    // Used to indicate artifact types that should be uploaded by the builder.
+    // Must be kept in sync with the dictionary in:
+    // https://chromium.googlesource.com/chromiumos/infra/recipes/+/refs/heads/master/recipe_modules/cros_artifacts/api.py
+    enum ArtifactTypes {
+      ARTIFACT_TYPES_UNSPECIFIED = 0;
+      // Indicates wanting a zip file of everything in the image directory.
+      IMAGE_ZIP = 1;
+      // Indicates wanting update payloads.
+      TEST_UPDATE_PAYLOAD = 2;
+      // Indicates wanting the autotest tarballs.
+      AUTOTEST_FILES = 3;
+      // Indicates wanting a tarball containing private TAST test bundles.
+      TAST_FILES = 4;
+      // Indicates wanting a tarball containing guest images and test bundles.
+      PINNED_GUEST_IMAGES = 5;
+      // Indicates wanting an archive of firmware images built from source.
+      FIRMWARE = 6;
+      // Indicates wanting a tarball of the Ebuilds logs.
+      EBUILD_LOGS = 7;
+    }
+    repeated ArtifactTypes artifact_types = 2;
   }
   Artifacts artifacts = 4;
 
