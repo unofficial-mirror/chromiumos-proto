@@ -14,6 +14,10 @@ message FilePath {
   string file_path = 1;
 }
 
+message ProtoBytes {
+  bytes serialized_proto = 1;
+}
+
 message GenerateTestPlanRequest {
   // Path on disk to source_tree_test_config.cfg, which lives in chromite.
   string source_tree_config_path = 1;
@@ -23,10 +27,18 @@ message GenerateTestPlanRequest {
 
   // Path on disk to the buildbucket Build protos in protobuf JSON format.
   // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
+  // DEPRECATED: Being removed in favor of buildbucket_protos
   repeated FilePath buildbucket_build_path = 3;
+
+  // Serialized buildbucket Build protos that are part of this orchestrator run.
+  // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
+  repeated ProtoBytes buildbucket_protos = 5;
 
   // Path on disk to the chromiumos repo checkout.
   string chromiumos_checkout_root = 4;
+
+  // Path on disk to the "repo" CLI tool.
+  string repo_tool_path = 6;
 }
 
 // The final test plan.
