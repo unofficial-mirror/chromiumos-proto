@@ -16,6 +16,14 @@ message BuildTarget {
   string name = 1;
 }
 
+// Chroot is used to define how to enter a chroot.
+message Chroot {
+  // The directory containing the chroot.
+  string path = 1;
+  // The cache directory override.
+  string cache_dir = 2;
+}
+
 // Message describing a package, The corresponding variable names are from
 // https://devmanual.gentoo.org/ebuild-writing/variables/index.html
 message PackageInfo {
