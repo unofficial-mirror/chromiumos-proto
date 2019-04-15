@@ -2,7 +2,9 @@ syntax = 'proto3';
 package chromite.api;
 
 import "chromite/api/build_api.proto";
+import "chromite/api/sysroot.proto";
 import "chromiumos/common.proto";
+import "google/protobuf/empty.proto";
 
 // Portage environment variable that points to a remote binhost.
 enum BinhostKey {
@@ -70,6 +72,32 @@ message SetBinhostResponse {
   string output_file = 1;
 }
 
+// Overlay types for push_overlays.
+enum OverlayType {
+  // Not specified.
+  OVERLAYTYPE_UNSPECIFIED = 0;
+
+  // Both public and private.
+  OVERLAYTYPE_BOTH = 1;
+
+  // Only public overlays.
+  OVERLAYTYPE_PUBLIC = 2;
+
+  // Only private overlays.
+  OVERLAYTYPE_PRIVATE = 3;
+
+  // No overlays will be used.
+  OVERLAYTYPE_NONE = 4;
+}
+
+// Regenerate the build cache.
+message RegenBuildCacheRequest {
+  // The type of overlays to push:  "public", "private", or "both".
+  OverlayType overlay_type = 1;
+  // The build target used to create the sysroot.
+  Sysroot sysroot = 2;
+}
+
 // Service for reading and writing to Portage package index.
 service BinhostService {
   option (service_options) = {
@@ -86,4 +114,12 @@ service BinhostService {
 
   // Update the binhost key for a build targets.
   rpc SetBinhost(SetBinhostRequest) returns (SetBinhostResponse);
+
+  // Regenerate the builder cache.
+  rpc RegenBuildCache(RegenBuildCacheRequest)
+    returns (google.protobuf.Empty) {
+    option (method_options) = {
+      method_chroot_assert: INSIDE;
+    };
+  }
 }
