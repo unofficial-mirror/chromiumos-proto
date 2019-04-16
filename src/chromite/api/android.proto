@@ -3,6 +3,7 @@ package chromite.api;
 
 import "chromite/api/build_api.proto";
 import "chromiumos/common.proto";
+import "google/protobuf/empty.proto";
 
 message MarkStableRequest {
   // Required.
@@ -10,7 +11,7 @@ message MarkStableRequest {
   string tracking_branch = 1;
   // Required.
   // Portage package name for Android container.
-  string package = 2;
+  string package_name = 2;
   // Required.
   // Android branch to import from.
   string android_build_branch = 3;
@@ -21,11 +22,31 @@ message MarkStableRequest {
   // The set of relevant build targets. Used to clean old version and for a
   // emerge-able sanity check for the new version.
   repeated chromiumos.BuildTarget boards = 6;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 7;
+}
+
+enum MarkStableStatusType {
+  // Unspecified
+  MARK_STABLE_STATUS_UNSPECIFIED = 0;
+  // Success
+  MARK_STABLE_STATUS_SUCCESS = 1;
+  // Pinned (at android_atom)
+  MARK_STABLE_STATUS_PINNED = 2;
+  // Early exit
+  MARK_STABLE_STATUS_EARLY_EXIT = 3;
 }
 
 message MarkStableResponse {
+  // Possible errors.
+  MarkStableStatusType status = 1;
   // The new package atom.
-  chromiumos.PackageInfo android_atom = 1;
+  chromiumos.PackageInfo android_atom = 2;
+}
+
+message UnpinVersionRequest {
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 1;
 }
 
 // Service for Android/ARC related functionality.
@@ -37,5 +58,20 @@ service AndroidService {
 
   // The MarkStable method uprevs Android, verifies the newly revved package
   // can be ememrged, and returns the new package info.
-  rpc MarkStable(MarkStableRequest) returns (MarkStableResponse);
+  rpc MarkStable(MarkStableRequest)
+    returns (MarkStableResponse) {
+    // TODO(crbug/904939): When we switch from the cbuildbot/commands.py hack,
+    // we need to make this INSIDE.
+    option (method_options) = {
+      method_chroot_assert: OUTSIDE;
+    };
+  }
+
+  // Unpin the Android package version.
+  rpc UnpinVersion(UnpinVersionRequest)
+    returns (google.protobuf.Empty) {
+    option (method_options) = {
+      method_chroot_assert: INSIDE;
+    };
+  }
 }
