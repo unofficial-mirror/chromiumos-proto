@@ -25,8 +25,9 @@ message MarkStableRequest {
   // emerge-able sanity check for the new version.
   // Recommended.
   repeated chromiumos.BuildTarget boards = 6;
-  // The chroot to use to execute the endpoint.
-  chromiumos.Chroot chroot = 7;
+  // The buildroot to use to execute the endpoint.  The chroot is the directory
+  // "chroot" in the buildroot directory.
+  string buildroot = 7;
 }
 
 enum MarkStableStatusType {
