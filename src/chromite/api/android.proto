@@ -21,6 +21,7 @@ message MarkStableRequest {
   string android_gts_build_branch = 5;
   // The set of relevant build targets. Used to clean old version and for a
   // emerge-able sanity check for the new version.
+  // Recommended.
   repeated chromiumos.BuildTarget boards = 6;
   // The chroot to use to execute the endpoint.
   chromiumos.Chroot chroot = 7;
@@ -57,7 +58,7 @@ service AndroidService {
   };
 
   // The MarkStable method uprevs Android, verifies the newly revved package
-  // can be ememrged, and returns the new package info.
+  // can be emerged, and returns the new package info.
   rpc MarkStable(MarkStableRequest)
     returns (MarkStableResponse) {
     // TODO(crbug/904939): When we switch from the cbuildbot/commands.py hack,

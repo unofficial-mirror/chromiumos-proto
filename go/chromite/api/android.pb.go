@@ -74,6 +74,7 @@ type MarkStableRequest struct {
 	AndroidGtsBuildBranch string `protobuf:"bytes,5,opt,name=android_gts_build_branch,json=androidGtsBuildBranch,proto3" json:"android_gts_build_branch,omitempty"`
 	// The set of relevant build targets. Used to clean old version and for a
 	// emerge-able sanity check for the new version.
+	// Recommended.
 	Boards []*chromiumos.BuildTarget `protobuf:"bytes,6,rep,name=boards,proto3" json:"boards,omitempty"`
 	// The chroot to use to execute the endpoint.
 	Chroot               *chromiumos.Chroot `protobuf:"bytes,7,opt,name=chroot,proto3" json:"chroot,omitempty"`

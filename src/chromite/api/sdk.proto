@@ -6,16 +6,6 @@ import "chromite/api/build_api.proto";
 import "chromiumos/common.proto";
 
 
-// Contains some common cros_sdk path arguments.
-message ChrootPaths {
-  // Override for the cache directory.
-  string cache = 1;
-  // Set the chrome root.
-  string chrome = 2;
-  // The absolute chroot path.
-  string chroot = 3;
-}
-
 // The chroot version information.
 message ChrootVersion {
   // The version number.
@@ -37,8 +27,8 @@ message CreateRequest {
 
   // The chroot-create flag arguments.
   Flags flags = 1;
-  // The chroot path arguments.
-  ChrootPaths paths = 2;
+  // The chroot to create.
+  chromiumos.Chroot chroot = 2;
 }
 
 // Create response message.
@@ -61,6 +51,8 @@ message UpdateRequest {
   Flags flags = 1;
   // The targets whose toolchains should be updated in the chroot.
   repeated chromiumos.BuildTarget toolchain_targets = 2;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 3;
 }
 
 // Chroot update response message.

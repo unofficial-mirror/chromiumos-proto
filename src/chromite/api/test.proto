@@ -12,6 +12,8 @@ import "google/protobuf/empty.proto";
 message DebugInfoTestRequest {
   // The sysroot to tests.
   chromite.api.Sysroot sysroot = 1;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 2;
 }
 
 message BuildTargetUnitTestRequest {

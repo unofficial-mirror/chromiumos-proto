@@ -23,6 +23,7 @@ message Image {
 
 // The image test arguments.
 message CreateImageRequest {
+  // Required.
   // The build target whose image is being built.
   chromiumos.BuildTarget build_target = 1;
   // The types of images to build, defaults to building base image.
@@ -37,6 +38,8 @@ message CreateImageRequest {
   // Used to set the LSB builder path key in /etc/lsb-release. See
   // chromite/scripts/cros_set_lsb_release.py.
   string builder_path = 6;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 7;
 }
 
 message CreateImageResult {
@@ -51,8 +54,10 @@ message CreateImageResult {
 // The image test arguments.
 message TestImageRequest {
   // The image to be tested.
+  // Image.path is required.
   Image image = 1;
   // The build target whose image is being tested.
+  // BuildTarget.name is required.
   chromiumos.BuildTarget build_target = 2;
 
   // Test results options specifications.
@@ -60,7 +65,11 @@ message TestImageRequest {
     // Location where the test results should be written.
     string directory = 1;
   }
+  // Required.
   Result result = 3;
+
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 4;
 }
 
 message TestImageResult {

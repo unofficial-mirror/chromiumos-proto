@@ -16,11 +16,13 @@ message DepGraph {
   // List of packages in the dependency graph and their infos, which include
   // dependency packages and the source paths.
   repeated PackageDepInfo package_deps = 2;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 3;
 }
 
 // Message describing a package and its dependencies.
 message PackageDepInfo {
-
+  // The package itself.
   chromiumos.PackageInfo package_info = 1;
 
   // List of packages this package depends on.
@@ -40,8 +42,10 @@ message SourcePath {
 // Example Json:
 // {"build_target":{"name":"board"},"output_file":"/tmp/depgraph.json"}
 message GetBuildDependencyGraphRequest {
+  // Required.
   // The board whose dependency graph is being created.
   chromiumos.BuildTarget build_target = 1;
+  // Required.
   // The path where the dep graph json file is being saved to.
   string output_path = 2;
 }
@@ -57,6 +61,7 @@ service DependencyService {
   // The module implementing the service.
   option (service_options) = {
     module: "board_build_dependency",
+    service_chroot_assert: INSIDE,
   };
 
   // Get the build dependency graph.

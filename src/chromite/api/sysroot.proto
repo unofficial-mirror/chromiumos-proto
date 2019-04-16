@@ -36,6 +36,8 @@ message SysrootCreateRequest {
   Flags flags = 2;
   // The profile to select for the sysroot.
   Profile profile = 3;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 4;
 }
 
 // Create response.
@@ -58,6 +60,8 @@ message InstallToolchainRequest {
   Sysroot sysroot = 1;
   // The flags for the install.
   Flags flags = 2;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 3;
 }
 
 message InstallToolchainResponse {
@@ -83,6 +87,8 @@ message InstallPackagesRequest {
   // A list of specific packages to install. Will generate the list of packages
   // for the build target if none are specified.
   repeated chromiumos.PackageInfo packages = 3;
+  // The chroot to use to execute the endpoint.
+  chromiumos.Chroot chroot = 4;
 }
 
 message InstallPackagesResponse {
