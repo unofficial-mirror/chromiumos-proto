@@ -3,6 +3,7 @@ package chromite.api;
 
 import "chromite/api/build_api.proto";
 import "chromite/api/sysroot.proto";
+import "chromiumos/common.proto";
 import "google/protobuf/empty.proto";
 
 // Proto for executing test-related functionality.
@@ -11,6 +12,22 @@ import "google/protobuf/empty.proto";
 message DebugInfoTestRequest {
   // The sysroot to tests.
   chromite.api.Sysroot sysroot = 1;
+}
+
+message BuildTargetUnitTestRequest {
+  // The build target being tested.
+  chromiumos.BuildTarget build_target = 1;
+  // The path where the result tarball should be saved.
+  string result_path = 2;
+  // The chroot containing the sysroot.
+  chromiumos.Chroot chroot = 3;
+}
+
+message BuildTargetUnitTestResponse {
+  // The unittest tarball that was created.
+  string tarball_path = 1;
+  // The list of packages that failed.
+  repeated chromiumos.PackageInfo failed_packages = 2;
 }
 
 // The test service.
@@ -22,4 +39,12 @@ service TestService {
 
   // Run the debug info tests on a sysroot.
   rpc DebugInfoTest(DebugInfoTestRequest) returns (google.protobuf.Empty);
+
+  // Run a build target's ebuild unit tests.
+  rpc BuildTargetUnitTest(BuildTargetUnitTestRequest)
+    returns (BuildTargetUnitTestResponse) {
+    option (method_options) = {
+      method_chroot_assert: OUTSIDE,
+    };
+  }
 }
