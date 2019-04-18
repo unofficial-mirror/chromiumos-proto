@@ -2,6 +2,7 @@ syntax = 'proto3';
 package chromite.api;
 
 import "chromite/api/build_api.proto";
+import "chromite/api/sysroot.proto";
 import "chromiumos/common.proto";
 
 // An artifact is a file generated during or after a build.
@@ -14,10 +15,16 @@ message Artifact {
 // should be dumped.
 message BundleRequest {
   // The build target to bundle artifacts for.
+  // Deprecated. Use sysroot instead.
   chromiumos.BuildTarget build_target = 1;
 
   // Absolute path to the directory in which artifacts should be dropped.
   string output_dir = 2;
+
+  // The chroot where the sysroot lives.
+  chromiumos.Chroot chroot = 3;
+  // The sysroot where the files live.
+  chromite.api.Sysroot sysroot = 4;
 }
 
 // Response describing which bundles were dumped to the given output directory.
@@ -25,6 +32,21 @@ message BundleResponse {
   // The artifacts that added to the output directory.
   repeated Artifact artifacts = 1;
 }
+
+// Request describing where to find build artifacts that are taken from a
+// sysroot.
+message BundleVmFilesRequest {
+  // The chroot where the sysroot lives.
+  chromiumos.Chroot chroot = 1;
+  // The sysroot where the files live.
+  chromite.api.Sysroot sysroot = 2;
+  // Test results directory relative to the sysroot.
+  string test_results_dir = 3;
+
+  // Absolute path to the directory in which artifacts should be dropped.
+  string output_dir = 4;
+}
+
 
 // Service for bundling build artifacts and dumping them somewhere on disk.
 service ArtifactsService {
@@ -52,4 +74,7 @@ service ArtifactsService {
 
   // Create a tar archive with ebuild logs.
   rpc BundleEbuildLogs(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with VM memory and disk images.
+  rpc BundleVmFiles(BundleVmFilesRequest) returns (BundleResponse);
 }
