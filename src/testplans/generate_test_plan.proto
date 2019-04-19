@@ -8,6 +8,7 @@ package testplans;
 
 option go_package = "go.chromium.org/chromiumos/infra/proto/go/testplans";
 
+import "chromiumos/common.proto";
 import "testplans/target_test_requirements_config.proto";
 
 message ProtoBytes {
@@ -46,11 +47,18 @@ message BuildPayload {
 
 // Hardware or VM requirements for running a test plan.
 message SchedulingRequirements {
+  // TODO(seanabraham): Remove this in favor of skylab_board.
   oneof target_type {
     // Any CrOS build target, such as "kevin". This should correspond to a
     // Portage overlay.
     string build_target = 2;
   }
+  // The key that identifies a distinct type of device in Skylab.
+  // Skylab uses the term "board", hence use of this otherwise controversial
+  // word.
+  // e.g. could use device_target 'caroline' to test the build_target
+  // 'caroline-arcnext'.
+  string skylab_board = 3;
 }
 
 // Metadata for executing one test configuration for one target type.
@@ -63,8 +71,12 @@ message TestUnit {
     VmTestCfg vm_test_cfg = 5;
   }
 
-  // The scheduling requirements for this test plan.
+  // The build target for this test unit.
+  chromiumos.BuildTarget build_target = 8;
+
+  // The scheduling requirements for this test unit.
   SchedulingRequirements scheduling_requirements = 6;
-  // The build files provided to run this test plan.
+
+  // The build files provided to run this test unit.
   BuildPayload build_payload = 7;
 }
