@@ -46,19 +46,14 @@ message BuildPayload {
 }
 
 // Hardware or VM requirements for running a test plan.
+// TODO(seanabraham): Remove this, as scheduling requirements are now contained
+// in the TestCfg proto itself.
 message SchedulingRequirements {
-  // TODO(seanabraham): Remove this in favor of skylab_board.
   oneof target_type {
     // Any CrOS build target, such as "kevin". This should correspond to a
     // Portage overlay.
     string build_target = 2;
   }
-  // The key that identifies a distinct type of device in Skylab.
-  // Skylab uses the term "board", hence use of this otherwise controversial
-  // word.
-  // e.g. could use device_target 'caroline' to test the build_target
-  // 'caroline-arcnext'.
-  string skylab_board = 3;
 }
 
 // Metadata for executing one test configuration for one target type.

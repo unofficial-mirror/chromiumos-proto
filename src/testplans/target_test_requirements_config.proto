@@ -24,13 +24,16 @@ message GceTestCfg {
 }
 
 message HwTestCfg {
-  // TODO(crbug.com/923001): Finalize the approach for where to enable Skylab
-  // testing; add such fields here as needed.
-
   // Configuration for a hardware test suite.
   message HwTest {
     // Name of the test suite to run.
     string suite = 1;
+    // The key that identifies a distinct type of device in Skylab.
+    // Skylab uses the term "board", hence use of this otherwise controversial
+    // word.
+    // e.g. could use device_target 'caroline' to test the build_target
+    // 'caroline-arcnext'.
+    string skylab_board = 11;
     // Number of seconds to wait before timing out waiting for results.
     int32 timeout_sec = 2;
     // Failure on HW tests warns only (does not generate error).
