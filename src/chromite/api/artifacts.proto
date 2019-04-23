@@ -54,28 +54,32 @@ message BundleVmFilesRequest {
 service ArtifactsService {
   option (service_options) = {
     module: "artifacts",
+    service_chroot_assert: OUTSIDE,
   };
-
-  // Generate zip containing all built images for the target.
-  rpc BundleImageZip(BundleRequest) returns (BundleResponse);
-
-  // Generate minimal update payloads to be used in HW testing.
-  rpc BundleTestUpdatePayloads(BundleRequest) returns (BundleResponse);
 
   // Create a tar archive with all files needed for Autotest HW testing.
   rpc BundleAutotestFiles(BundleRequest) returns (BundleResponse);
 
-  // Create a tar archive with all files needed for Tast HW testing.
-  rpc BundleTastFiles(BundleRequest) returns (BundleResponse);
-
-  // Create a tar archive with all guest images test bundles.
-  rpc BundlePinnedGuestImages(BundleRequest) returns (BundleResponse);
+  // Create a tar archive with ebuild logs.
+  rpc BundleEbuildLogs(BundleRequest) returns (BundleResponse);
 
   // Create a tar archive with unsigned firmware images.
   rpc BundleFirmware(BundleRequest) returns (BundleResponse);
 
-  // Create a tar archive with ebuild logs.
-  rpc BundleEbuildLogs(BundleRequest) returns (BundleResponse);
+  // Generate zip containing all built images for the target.
+  rpc BundleImageZip(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with all guest images test bundles.
+  rpc BundlePinnedGuestImages(BundleRequest) returns (BundleResponse);
+
+  // Create the simple chrome artifacts.
+  rpc BundleSimpleChromeArtifacts(BundleRequest) returns (BundleResponse);
+
+  // Create a tar archive with all files needed for Tast HW testing.
+  rpc BundleTastFiles(BundleRequest) returns (BundleResponse);
+
+  // Generate minimal update payloads to be used in HW testing.
+  rpc BundleTestUpdatePayloads(BundleRequest) returns (BundleResponse);
 
   // Create a tar archive with VM memory and disk images.
   rpc BundleVmFiles(BundleVmFilesRequest) returns (BundleResponse);
