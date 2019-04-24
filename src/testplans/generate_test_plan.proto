@@ -16,8 +16,6 @@ message ProtoBytes {
 }
 
 message GenerateTestPlanRequest {
-  reserved 1, 2;
-
   // Serialized buildbucket Build protos that are part of this orchestrator run.
   // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
   repeated ProtoBytes buildbucket_protos = 5;
@@ -45,17 +43,6 @@ message BuildPayload {
   string artifacts_gs_path = 2;
 }
 
-// Hardware or VM requirements for running a test plan.
-// TODO(seanabraham): Remove this, as scheduling requirements are now contained
-// in the TestCfg proto itself.
-message SchedulingRequirements {
-  oneof target_type {
-    // Any CrOS build target, such as "kevin". This should correspond to a
-    // Portage overlay.
-    string build_target = 2;
-  }
-}
-
 // Metadata for executing one test configuration for one target type.
 message TestUnit {
   oneof TestCfg {
@@ -68,9 +55,6 @@ message TestUnit {
 
   // The build target for this test unit.
   chromiumos.BuildTarget build_target = 8;
-
-  // The scheduling requirements for this test unit.
-  SchedulingRequirements scheduling_requirements = 6;
 
   // The build files provided to run this test unit.
   BuildPayload build_payload = 7;
