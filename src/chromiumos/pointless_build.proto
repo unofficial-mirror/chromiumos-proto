@@ -19,6 +19,16 @@ message PointlessBuildCheckRequest {
   // Serialized buildbucket Build proto for this child builder run.
   // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
   ProtoBytes buildbucket_proto = 1;
+
+  // Path on disk to a JSON-encoded chromite.api.DepGraph for this child
+  // builder.
+  string dep_graph_path = 2;
+
+  // Path on disk to the chromiumos workspace repo checkout.
+  string chromiumos_workspace_checkout_root = 3;
+
+  // Path on disk to the "repo" CLI tool.
+  string repo_tool_path = 4;
 }
 
 // The output proto for invocations of the Pointless Build Checker program.
