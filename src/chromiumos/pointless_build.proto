@@ -1,0 +1,39 @@
+// Copyright 2019 The Chromium OS Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+syntax = "proto3";
+
+package chromiumos;
+
+option go_package = "go.chromium.org/chromiumos/infra/proto/go/chromiumos";
+
+import "google/protobuf/wrappers.proto";
+
+message ProtoBytes {
+  bytes serialized_proto = 1;
+}
+
+// The input proto for invocations of the Pointless Build Checker program.
+message PointlessBuildCheckRequest {
+  // Serialized buildbucket Build proto for this child builder run.
+  // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
+  ProtoBytes buildbucket_proto = 1;
+}
+
+// The output proto for invocations of the Pointless Build Checker program.
+message PointlessBuildCheckResponse {
+  // Whether the build is pointless and can be terminated without proceeding to
+  // building packages and testing.
+  google.protobuf.BoolValue build_is_pointless = 1;
+
+  enum PointlessBuildReason {
+    POINTLESS_BUILD_REASON_UNSPECIFIED = 0;
+    IRRELEVANT_TO_DEPS_GRAPH = 1;
+    IRRELEVANT_TO_KNOWN_NON_PORTAGE_DIRECTORIES = 2;
+  }
+
+  // If build_is_pointless, this is the reason that the Pointless Build Checker
+  // came to that conclusion. Otherwise, this is unspecified.
+  PointlessBuildReason pointless_build_reason = 2;
+}
