@@ -40,6 +40,59 @@ message DebugInfoTestRequest {
   chromiumos.Chroot chroot = 2;
 }
 
+message VmTestRequest {
+  // The build target under test. Required.
+  chromiumos.BuildTarget build_target = 1;
+
+  // The chroot in which to run commands. Required.
+  chromiumos.Chroot chroot = 2;
+
+  // The VM image under test.
+  message VmImage {
+    // Path to the image under test. Required.
+    string path = 1;
+  }
+
+  // The VM image to test. Required.
+  VmImage vm_image = 3;
+
+  // Options for SSHing into the VM.
+  message SshOptions {
+    // Path to the private key to the VM.
+    string private_key_path = 1;
+
+    // SSH port to communicate with VM.
+    int32 port = 2;
+  }
+
+  // Options for SSHing into the VM.
+  SshOptions ssh_options = 4;
+
+  // The program that manages and runs the tests in the VM.
+  enum TestHarness {
+    // No test harness specified.
+    UNSPECIFIED = 0;
+
+    // Run tests with Tast.
+    TAST = 1;
+
+    // Run tests with Autotest.
+    AUTOTEST = 2;
+  }
+
+  TestHarness test_harness = 5;
+
+  // A specific VM test to run.
+  message VmTest {
+    // The name pattern for the VM test.
+    // For Autotest, this pattern matches against the test suite name.
+    // For Tast, this pattern matches against the Tast test name.
+    string pattern = 1;
+  }
+
+  // All VM tests that should be run. At least one must be specified.
+  repeated VmTest vm_tests = 6;
+}
 
 // The test service.
 service TestService {
@@ -61,4 +114,7 @@ service TestService {
 
   // Run the debug info tests on a sysroot.
   rpc DebugInfoTest(DebugInfoTestRequest) returns (google.protobuf.Empty);
+
+  // Run VM tests and report failures.
+  rpc VmTest(VmTestRequest) returns (google.protobuf.Empty);
 }
