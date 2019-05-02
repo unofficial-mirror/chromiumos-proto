@@ -7,7 +7,6 @@ import "chromite/api/build_api.proto";
 import "chromite/api/image.proto";
 import "chromite/api/sysroot.proto";
 import "chromiumos/common.proto";
-import "google/protobuf/empty.proto";
 
 // Proto for executing test-related functionality.
 
@@ -33,12 +32,18 @@ message ChromiteUnitTestRequest {
   chromiumos.Chroot chroot = 1;
 }
 
+message ChromiteUnitTestResponse {
+}
+
 // Run the debug_info_test script.
 message DebugInfoTestRequest {
   // The sysroot to tests.
   chromite.api.Sysroot sysroot = 1;
   // The chroot to use to execute the endpoint.
   chromiumos.Chroot chroot = 2;
+}
+
+message DebugInfoTestResponse {
 }
 
 message VmTestRequest {
@@ -89,6 +94,9 @@ message VmTestRequest {
   repeated VmTest vm_tests = 6;
 }
 
+message VmTestResponse {
+}
+
 // The test service.
 service TestService {
   option (service_options) = {
@@ -105,11 +113,11 @@ service TestService {
   }
 
   // Run the chromite unit tests.
-  rpc ChromiteUnitTest(ChromiteUnitTestRequest) returns (google.protobuf.Empty);
+  rpc ChromiteUnitTest(ChromiteUnitTestRequest) returns (ChromiteUnitTestResponse);
 
   // Run the debug info tests on a sysroot.
-  rpc DebugInfoTest(DebugInfoTestRequest) returns (google.protobuf.Empty);
+  rpc DebugInfoTest(DebugInfoTestRequest) returns (DebugInfoTestResponse);
 
   // Run VM tests and report failures.
-  rpc VmTest(VmTestRequest) returns (google.protobuf.Empty);
+  rpc VmTest(VmTestRequest) returns (VmTestResponse);
 }

@@ -5,7 +5,6 @@ option go_package = "go.chromium.org/chromiumos/infra/proto/go/chromite/api";
 
 import "chromite/api/build_api.proto";
 import "chromiumos/common.proto";
-import "google/protobuf/empty.proto";
 
 message MarkStableRequest {
   // Required.
@@ -53,6 +52,9 @@ message UnpinVersionRequest {
   chromiumos.Chroot chroot = 1;
 }
 
+message UnpinVersionResponse {
+}
+
 // Service for Android/ARC related functionality.
 service AndroidService {
   option (service_options) = {
@@ -73,7 +75,7 @@ service AndroidService {
 
   // Unpin the Android package version.
   rpc UnpinVersion(UnpinVersionRequest)
-    returns (google.protobuf.Empty) {
+    returns (UnpinVersionResponse) {
     option (method_options) = {
       method_chroot_assert: INSIDE;
     };

@@ -6,7 +6,6 @@ option go_package = "go.chromium.org/chromiumos/infra/proto/go/chromite/api";
 import "chromite/api/build_api.proto";
 import "chromite/api/sysroot.proto";
 import "chromiumos/common.proto";
-import "google/protobuf/empty.proto";
 
 // Portage environment variable that points to a remote binhost.
 enum BinhostKey {
@@ -100,6 +99,9 @@ message RegenBuildCacheRequest {
   Sysroot sysroot = 2;
 }
 
+message RegenBuildCacheResponse {
+}
+
 // Service for reading and writing to Portage package index.
 service BinhostService {
   option (service_options) = {
@@ -119,7 +121,7 @@ service BinhostService {
 
   // Regenerate the builder cache.
   rpc RegenBuildCache(RegenBuildCacheRequest)
-    returns (google.protobuf.Empty) {
+    returns (RegenBuildCacheResponse) {
     option (method_options) = {
       method_chroot_assert: INSIDE;
     };
