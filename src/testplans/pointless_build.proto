@@ -4,9 +4,9 @@
 
 syntax = "proto3";
 
-package chromiumos;
+package testplans;
 
-option go_package = "go.chromium.org/chromiumos/infra/proto/go/chromiumos";
+option go_package = "go.chromium.org/chromiumos/infra/proto/go/testplans";
 
 import "chromite/api/depgraph.proto";
 import "google/protobuf/wrappers.proto";
