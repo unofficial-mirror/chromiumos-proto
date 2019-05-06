@@ -18,11 +18,6 @@ message PointlessBuildCheckRequest {
   // See https://chromium.googlesource.com/infra/luci/luci-go/+/master/buildbucket/proto/build.proto
   ProtoBytes buildbucket_proto = 1;
 
-  // Path on disk to a JSON-encoded chromite.api.DepGraph for this child
-  // builder.
-  // DEPRECATED: Use the DepGraph message below.
-  string dep_graph_path = 2;
-
   // The DepGraph for this child builder.
   chromite.api.DepGraph dep_graph = 5;
 
