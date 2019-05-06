@@ -8,6 +8,7 @@ package chromiumos;
 
 option go_package = "go.chromium.org/chromiumos/infra/proto/go/chromiumos";
 
+import "chromite/api/depgraph.proto";
 import "google/protobuf/wrappers.proto";
 
 message ProtoBytes {
@@ -22,7 +23,11 @@ message PointlessBuildCheckRequest {
 
   // Path on disk to a JSON-encoded chromite.api.DepGraph for this child
   // builder.
+  // DEPRECATED: Use the DepGraph message below.
   string dep_graph_path = 2;
+
+  // The DepGraph for this child builder.
+  chromite.api.DepGraph dep_graph = 5;
 
   // Path on disk to the chromiumos workspace repo checkout.
   string chromiumos_workspace_checkout_root = 3;
