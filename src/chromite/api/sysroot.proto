@@ -91,6 +91,8 @@ message InstallPackagesRequest {
   repeated chromiumos.PackageInfo packages = 3;
   // The chroot to use to execute the endpoint.
   chromiumos.Chroot chroot = 4;
+  // USE flags to set before building the packages.
+  repeated chromiumos.UseFlag use_flags = 5;
 }
 
 message InstallPackagesResponse {

@@ -18,10 +18,24 @@ message BuildTarget {
 
 // Chroot is used to define how to enter a chroot.
 message Chroot {
+  message ChrootEnv {
+    // USE flags to set.
+    repeated UseFlag use_flags = 1;
+    // FEATURES flags to set.
+    repeated Feature features = 2;
+  }
+
   // The directory containing the chroot.
   string path = 1;
   // The cache directory override.
   string cache_dir = 2;
+  // Environment configuration.
+  ChrootEnv env = 3;
+}
+
+// FEATURES environment variable component message.
+message Feature {
+  string feature = 1;
 }
 
 // Message describing a package, The corresponding variable names are from
@@ -35,4 +49,10 @@ message PackageInfo {
 
   // The package version and revision (PVR variable).
   string version = 3;
+}
+
+// Message for USE flags.
+message UseFlag {
+  // The use flag.
+  string flag = 1;
 }
