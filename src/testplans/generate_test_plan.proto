@@ -9,11 +9,8 @@ package testplans;
 option go_package = "go.chromium.org/chromiumos/infra/proto/go/testplans";
 
 import "chromiumos/common.proto";
+import "testplans/common.proto";
 import "testplans/target_test_requirements_config.proto";
-
-message ProtoBytes {
-  bytes serialized_proto = 1;
-}
 
 message GenerateTestPlanRequest {
   // Serialized buildbucket Build protos that are part of this orchestrator run.

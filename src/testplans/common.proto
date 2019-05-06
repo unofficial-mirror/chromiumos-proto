@@ -16,3 +16,7 @@ message SourceTree {
   string path = 1;
 }
 
+message ProtoBytes {
+  bytes serialized_proto = 1;
+}
+

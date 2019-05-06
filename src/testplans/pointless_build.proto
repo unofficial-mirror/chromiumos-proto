@@ -9,11 +9,8 @@ package testplans;
 option go_package = "go.chromium.org/chromiumos/infra/proto/go/testplans";
 
 import "chromite/api/depgraph.proto";
+import "testplans/common.proto";
 import "google/protobuf/wrappers.proto";
-
-message ProtoBytes {
-  bytes serialized_proto = 1;
-}
 
 // The input proto for invocations of the Pointless Build Checker program.
 message PointlessBuildCheckRequest {
