@@ -8,6 +8,7 @@ package chromiumos;
 
 option go_package = "go.chromium.org/chromiumos/infra/proto/go/chromiumos";
 
+import "chromiumos/common.proto";
 import "google/protobuf/wrappers.proto";
 
 // Configuration used by a builder during execution.
@@ -91,6 +92,13 @@ message BuilderConfig {
     bool internal = 1;
   }
   Chrome chrome = 5;
+
+  // Build specific configuration.
+  message Build {
+    // USE flags to use with the build.
+    repeated UseFlag use_flags = 1;
+  }
+  Build build = 6;
 }
 
 // List of builder configs. Intended to be serialized to / from disk.
