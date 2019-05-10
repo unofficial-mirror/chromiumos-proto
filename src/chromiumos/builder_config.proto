@@ -97,6 +97,12 @@ message BuilderConfig {
   message Build {
     // USE flags to use with the build.
     repeated UseFlag use_flags = 1;
+
+    // The profile of the variant to set up and build.
+    message PortageProfile {
+      string profile = 1;
+    }
+    PortageProfile portage_profile = 2;
   }
   Build build = 6;
 }
